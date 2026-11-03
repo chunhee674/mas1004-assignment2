@@ -58,5 +58,5 @@ End the log with your plan for what to try next.
 ## 2026-11-03 balanced_no_flip (Track A)
 - changed: no left-right flips (`T.RandomHorizontalFlip()` taken out of `train_transform`), on top of balanced
 - why: 지금 레시피는 학습 사진을 무작위로 좌우 반전하는데, 그러면 간판 글자가 반대가 되고 좌측통행이 우측통행처럼 보여서 나라를 구분하는 단서인 글자와 통행 방향이 흐려진다. 오답 사진에서 어느 나라 글자인지 보이는데도 틀리는 경우가 많았으므로, 좌우 반전을 없애면 모델이 이 단서를 더 잘 쓸 수 있을 것이라 생각하여 이를 확인하고자 no_flip을 골랐다.
-- validation: (after the Colab run) (before: balanced 0.5139)
+- validation: 0.5057 (before: balanced 0.5139); seoul 0.503, busan 0.443, tokyo 0.530, osaka 0.444, taipei 0.609
 - what it means: (to ask the student)
