@@ -74,5 +74,5 @@ End the log with your plan for what to try next.
 ## 2026-11-04 balanced_crop60 (Track A)
 - changed: crops in training keep 60-100% of the photo's area instead of 35-100% (`RandomResizedCrop(224, scale=(0.6, 1.0))`), on top of balanced
 - why: 학습할 때는 사진을 원본 넓이의 35%까지 무작위로 잘라 확대하는데, 이렇게 하면 두 가지 문제가 생길 수 있다. 첫째, 작게 잘린 조각에는 산, 바다, 아파트 단지, 전선처럼 사진 전체를 봐야 보이는 도시 단서가 빠져 있을 수 있다. 그런데도 모델은 그 조각을 정답 도시 라벨과 함께 배우기 때문에, 단서가 아닌 엉뚱한 특징을 외우게 될 위험이 있다. 둘째, 채점할 때는 사진 가운데를 거의 전체 크기로 보기 때문에 학습 때와 채점 때 사진의 모습이 다르다. 학습 때는 확대된 큰 간판 글자와 건물을 보고 배우는데, 채점 때는 확대되지 않은 작은 글자와 건물을 보게 되어, 배운 단서를 알아보지 못할 수 있다. 이에 잘라 내는 최소 넓이를 60%로 올려, 학습 때도 사진을 덜 확대하고 더 넓게 보도록 바꾸었다.
-- validation: (after the Colab run) (before: balanced 0.5139)
+- validation: 0.4976 (before: balanced 0.5139); seoul 0.522, busan 0.432, tokyo 0.505, osaka 0.445, taipei 0.585
 - what it means: (to ask the student)
