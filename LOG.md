@@ -16,7 +16,7 @@ End the log with your plan for what to try next.
 
 ## 2026-11-01 baseline (Track A)
 - changed: nothing, the starter recipe on all training photos; seeds 0 and 1
-- why: (to ask the student)
+- why: 같은 레시피에서 seed만 바꿨을 때 결과가 얼마나 흔들리는지를 재서 앞으로 볼 정확도 개선이 진짜인지 운인지 판단할 기준을 만들려는 것이다.
 - validation: seed 0 0.4894, seed 1 0.4958 (seoul 0.573/0.570, busan 0.375/0.387, tokyo 0.637/0.614, osaka 0.330/0.381, taipei 0.531/0.527)
 - what it means: (to ask the student)
 
@@ -29,7 +29,7 @@ End the log with your plan for what to try next.
 바다, 한글 간판, 파란 버스, 부산 시장, 건물 뒤편 산, 바다와 산비탈에 층층이 들어선 주택, 한옥
 
 도쿄
-바다, 비교적 건물, 일본 간판, 좌측통행 차도, 일본식 지하철들, 촘촘한 전봇대와 전선
+바다, 일본 간판, 좌측통행 차도, 일본식 지하철들, 촘촘한 전봇대와 전선
 
 오사카
 일본 간판, 도톤보리 강, 밤에 빛나는 간판 거리, 좌측통행 차도, 낮은 건물, 일본식 지하철들, 촘촘한 전봇대와 전선
