@@ -1,1 +1,1 @@
-python src/curate.py mistakes results/balanced_seed0/model.onnx --every 2
+python src/top2.py results/baseline_seed0/model.onnx results/balanced_seed0/model.onnx
