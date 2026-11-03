@@ -1,1 +1,1 @@
-python src/official.py --tag balanced --seed 0
+python src/official.py --tag balanced_no_flip --seed 0
