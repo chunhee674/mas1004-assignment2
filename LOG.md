@@ -45,3 +45,9 @@ End the log with your plan for what to try next.
 
 2. 간판이 있어 어느 나라 글자인지 보이는데도 다른 나라로 틀린다. 간판이나 표지판에 한글, 일본어(가나), 번체 한자 중 하나가 분명히 보이는 사진이기에 어떤 문자인지만 구분하면 나라를 맞힐 수 있는데, 모델은 그 단서를 쓰지 못하고 엉뚱한 나라를 골랐다.
 예: 부산 #2(한글 간판 시장), 오사카 #4(일본어 표지판)
+
+## 2026-11-03 balanced (Track A)
+- changed: every city drawn equally often (`sample_weights` gives each photo 1 / the number of photos of its city)
+- why: (to ask the student)
+- validation: 0.5139 (before: baseline 0.4894 seed 0, 0.4958 seed 1); seoul 0.517, busan 0.467, tokyo 0.529, osaka 0.444, taipei 0.614
+- what it means: (to ask the student)
