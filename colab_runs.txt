@@ -1,1 +1,1 @@
-python src/official.py --tag balanced_no_flip --seed 0
+python src/curate.py mistakes results/balanced_seed0/model.onnx --every 2
