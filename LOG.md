@@ -54,3 +54,9 @@ End the log with your plan for what to try next.
   반면 서울은 5.4%p, 도쿄는 9.7%p 내려갔다. 사진이 많아 학습 때 더 자주 등장하던 이점이 사라졌기 때문이다. 즉 baseline에서 서울과 도쿄의 점수가 높았던 데에는 사진 수의 영향이 있었고, 부산과 오사카는 그만큼 손해를 보고 있었다. 이 결과는 가설을 뒷받침한다.
   예상과 달리 같은 나라에 경쟁 도시가 없는 타이베이도 8.4%p 올랐다. 이는 타이베이 역시 다른 나라의 서울과 도쿄에 밀리고 있었다는 뜻이다. 따라서 같은 나라 안에서의 쏠림에 그치지 않고, 나라와 관계없이 사진이 많은 도시 쪽으로 예측이 쏠린다는 사실을 알게 되었다.
   다만 전체 점수의 상승은 2.1%p에 그쳤다. 대부분은 서울과 도쿄의 점수가 다른 도시로 옮겨 간 결과이며 모델의 도시 구분 능력 자체가 크게 나아진 것은 아니다.
+
+## 2026-11-03 balanced_no_flip (Track A)
+- changed: no left-right flips (`T.RandomHorizontalFlip()` taken out of `train_transform`), on top of balanced
+- why: 지금 레시피는 학습 사진을 무작위로 좌우 반전하는데, 그러면 간판 글자가 반대가 되고 좌측통행이 우측통행처럼 보여서 나라를 구분하는 단서인 글자와 통행 방향이 흐려진다. 오답 사진에서 어느 나라 글자인지 보이는데도 틀리는 경우가 많았으므로, 좌우 반전을 없애면 모델이 이 단서를 더 잘 쓸 수 있을 것이라 생각하여 이를 확인하고자 no_flip을 골랐다.
+- validation: (after the Colab run) (before: balanced 0.5139)
+- what it means: (to ask the student)
