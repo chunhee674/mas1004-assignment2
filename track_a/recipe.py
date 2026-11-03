@@ -35,7 +35,7 @@ def train_transform():
     photo is drawn, so the same photo looks different every time.
     """
     return T.Compose([
-        T.RandomResizedCrop(224, scale=(0.35, 1.0)),
+        T.RandomResizedCrop(224, scale=(0.6, 1.0)),
         T.RandomHorizontalFlip(),
         T.ColorJitter(0.2, 0.2, 0.2),
     ])

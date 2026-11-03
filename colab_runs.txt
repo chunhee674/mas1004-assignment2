@@ -1,1 +1,2 @@
-python src/top2.py results/baseline_seed0/model.onnx results/balanced_seed0/model.onnx
+python src/official.py --tag balanced_crop60 --seed 0
+python src/top2.py results/baseline_seed0/model.onnx results/balanced_seed0/model.onnx results/balanced_crop60_seed0/model.onnx
