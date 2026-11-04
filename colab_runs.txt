@@ -1,1 +1,3 @@
-python src/curate.py suspects results/balanced_seed0/model.onnx --n 96
+python src/official.py --tag balanced_clean --seed 0
+python src/train_b.py --tag b1 --submit
+python src/check_submission.py --no-val
