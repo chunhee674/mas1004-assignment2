@@ -28,3 +28,15 @@ rows.sort(key=lambda r: (r["city"], r["file"]))
 items = [(TRAIN / r["city"] / Path(r["file"]).name, f"{r['city']} {r['title']}") for r in rows]
 names = draw_sheets("cosplay", items)
 print(f"{len(items)} training photos with cosplay in the title, on {', '.join(names)}")
+
+# The evidence for rule 4: cosplay photos of other cities that the balanced
+# model, which was trained on them, still calls Taipei.
+suspects = ROOT / "results" / "curate" / "suspects_balanced_seed0.csv"
+if suspects.exists():
+    cosplay = {f"{r['city']}/{Path(r['file']).name}" for r in rows}
+    with open(suspects, encoding="utf-8") as f:
+        said = [r for r in csv.DictReader(f)
+                if r["path"] in cosplay and r["city"] != "taipei" and r["answer"] == "taipei"]
+    items = [(TRAIN / r["path"], f"{r['city']} {float(r['own_city_probability']):.2f}, says taipei") for r in said]
+    names = draw_sheets("cosplay_said_taipei", items)
+    print(f"{len(items)} cosplay photos of other cities that balanced calls Taipei, on {', '.join(names)}")
