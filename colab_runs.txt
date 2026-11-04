@@ -1,2 +1,1 @@
-python src/curate.py suspects results/balanced_clean_seed0/model.onnx --n 96
-python src/curate.py suspects results/balanced_clean_mixup_seed0/model.onnx --n 96
+python src/official.py --tag clean2 --seed 0
