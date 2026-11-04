@@ -1,2 +1,2 @@
-python src/curate.py mistakes results/balanced_clean_seed0/model.onnx
-python src/official.py --tag balanced_clean_mixup --seed 0
+python src/curate.py suspects results/balanced_clean_seed0/model.onnx --n 96
+python src/curate.py suspects results/balanced_clean_mixup_seed0/model.onnx --n 96
