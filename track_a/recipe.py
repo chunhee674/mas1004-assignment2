@@ -25,7 +25,6 @@ import torch.nn.functional as F
 from torchvision import transforms as T
 
 BATCH_SIZE = 64
-MIXUP_ALPHA = 0.2
 
 
 def train_transform():
@@ -70,15 +69,8 @@ def mix(images, labels):
     images is (BATCH_SIZE, 3, 224, 224), normalised; labels is (BATCH_SIZE,)
     city numbers. Return images of the same shape and the targets for
     loss_fn: the labels, or probabilities (BATCH_SIZE, 5) if you mix photos.
-
-    mixup (Zhang et al., ICLR 2018): each photo is blended with another photo
-    of the batch, lam * a + (1 - lam) * b, and so is its target. lam is drawn
-    from Beta(0.2, 0.2), the paper's ImageNet setting, once per batch.
     """
-    lam = torch.distributions.Beta(MIXUP_ALPHA, MIXUP_ALPHA).sample().item()
-    perm = torch.randperm(images.shape[0], device=images.device)
-    onehot = F.one_hot(labels, 5).float()
-    return lam * images + (1 - lam) * images[perm], lam * onehot + (1 - lam) * onehot[perm]
+    return images, labels
 
 
 def loss_fn(logits, targets):
