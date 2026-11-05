@@ -1,1 +1,1 @@
-python src/ocr_scripts.py
+python src/ocr_boxes.py
