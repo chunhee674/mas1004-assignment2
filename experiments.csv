@@ -7,3 +7,6 @@ finished,track,tag,seed,official_budget,budget,val_score,seoul,busan,tokyo,osaka
 2026-11-04T15:51:16,A,balanced_clean,0,True,249984,0.5206,0.5405,0.4633,0.5215,0.4488,0.6291,2233.7,cuda,"selection.csv, 43183 rows",9a6cc745ea82,b4cb6826b2eb,0c8089a
 2026-11-04T16:19:38,B,b1,,,176896,0.4934,0.5869,0.3676,0.6179,0.3539,0.5408,1596.3,cuda,resnet18 224px; data/starter/train,,,0c8089a
 2026-11-04T17:13:47,A,balanced_clean_mixup,0,True,249984,0.5063,0.4973,0.4273,0.5001,0.468,0.6389,2167.3,cuda,"selection.csv, 43183 rows",15df71cd0f92,b4cb6826b2eb,feadf45
+2026-11-05T02:53:01,A,clean2,0,True,249984,0.5099,0.5076,0.4525,0.5313,0.4474,0.6108,2338.6,cuda,"selection.csv, 42329 rows",9a6cc745ea82,d998918e73e7,bae25bc
+2026-11-05T03:36:28,A,clean2_food,0,True,249984,0.5122,0.5318,0.4871,0.505,0.4154,0.6215,2344.7,cuda,"selection.csv, 42635 rows",9a6cc745ea82,ea14c8dab096,bae25bc
+2026-11-05T09:39:58,A,clean2_food,0,True,249984,0.5134,0.5294,0.441,0.5156,0.437,0.6438,2208.0,cuda,"selection.csv, 42329 rows",9a6cc745ea82,d998918e73e7,bae25bc
