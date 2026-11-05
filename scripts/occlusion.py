@@ -2,8 +2,9 @@
 
     uv run python scripts/occlusion.py submission/model.onnx --size 448 --name b2
 
-Takes results/curate/ocr_boxes.csv. For each validation photo with a text box in
-the middle square the model sees, three versions go through the model: the
+Takes results/curate/ocr_boxes.csv, without the photos ocr_table.py --clean
+leaves out. For each validation photo with a text box in the middle square the
+model sees, three versions go through the model: the
 photo as it is, the text boxes painted grey, and boxes of the same sizes painted
 grey at random places away from any text box (the control; seed 0). A photo where
 the control boxes do not fit is left out. Prints, for each group, how often the
@@ -29,6 +30,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 import rules  # noqa: E402
 from curate import OUT, draw_sheets  # noqa: E402
+from ocr_table import wrong_script  # noqa: E402
 from rules import CITIES  # noqa: E402
 
 VAL = ROOT / "data" / "starter" / "val"
@@ -114,8 +116,11 @@ def main():
 
     import onnxruntime
     session = onnxruntime.InferenceSession(str(args.onnx), providers=["CPUExecutionProvider"])
+    with open(OUT / "ocr_val.csv", encoding="utf-8") as f:
+        misread = {r["path"] for r in csv.DictReader(f) if wrong_script(r)}
     with open(OUT / "ocr_boxes.csv", encoding="utf-8") as f:
-        rows = list(csv.DictReader(f))[::args.every]
+        rows = [r for r in csv.DictReader(f) if r["path"] not in misread][::args.every]
+    print(f"{len(misread)} photos left out: Hangul read outside Korea or kana read outside Japan")
 
     rng = random.Random(0)
     photos, no_text, no_room = [], 0, 0
@@ -156,6 +161,15 @@ def main():
         report(city, [p for p in photos if p["city"] == city])
     for low, high in ((0, 0.01), (0.01, 0.03), (0.03, 0.1), (0.1, 1.01)):
         report(f"cover {low}-{high}", [p for p in photos if low <= p["coverage"] < high])
+
+    # every photo left after the misread ones; a photo that was not covered keeps its plain answer
+    with open(OUT / f"predictions_{args.name}.csv", encoding="utf-8") as f:
+        kept = [r for r in csv.DictReader(f) if r["path"] not in misread][::args.every]
+    used = {p["path"] for p in photos}
+    others = sum(r["answer"] == r["city"] for r in kept if r["path"] not in used)
+    print(f"\nall {len(kept)} photos: plain {(others + sum(p['plain'] == p['city'] for p in photos)) / len(kept):.3f}"
+          f", text {(others + sum(p['text'] == p['city'] for p in photos)) / len(kept):.3f}"
+          f", control {(others + sum(p['control'] == p['city'] for p in photos)) / len(kept):.3f}")
 
     pick = random.Random(0).sample(photos, min(24, len(photos)))
     with tempfile.TemporaryDirectory() as tmp:

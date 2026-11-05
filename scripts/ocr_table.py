@@ -40,6 +40,11 @@ def kind(r, least=1):
     return "latin_only" if latin else "none"
 
 
+def wrong_script(r):
+    """Hangul read outside Korea or kana read outside Japan: taken for a misreading, the student's rule."""
+    return (int(r["hangul"]) > 0 and COUNTRY[r["city"]] != "korea") or (int(r["kana"]) > 0 and COUNTRY[r["city"]] != "japan")
+
+
 def table(rows):
     print(f"{'kind':12} {'photos':>6} {'acc':>6} {'country':>7}   answers " + " ".join(f"{c:>6}" for c in CITIES))
     for k in KINDS:
@@ -57,11 +62,17 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--name", required=True)
     ap.add_argument("--least", type=int, default=1, help="text boxes of a script needed to count it")
+    ap.add_argument("--clean", action="store_true", help="leave out the photos wrong_script finds")
     args = ap.parse_args()
     with open(OUT / f"predictions_{args.name}.csv", encoding="utf-8") as f:
         answers = {r["path"]: r["answer"] for r in csv.DictReader(f)}
     with open(OUT / "ocr_val.csv", encoding="utf-8") as f:
         rows = list(csv.DictReader(f))
+    if args.clean:
+        kept = [r for r in rows if not wrong_script(r)]
+        print(f"left out {len(rows) - len(kept)} photos, by true city: "
+              + ", ".join(f"{c} {sum(r['city'] == c for r in rows) - sum(r['city'] == c for r in kept)}" for c in CITIES))
+        rows = kept
     for r in rows:
         r["kind"], r["answer"] = kind(r, args.least), answers[r["path"]]
     print(f"all cities, {len(rows)} photos")
@@ -75,7 +86,7 @@ def main():
     for k in KINDS:
         group = [r for r in rows if r["kind"] == k]
         pick = rng.sample(group, min(48, len(group)))
-        draw_sheets(f"ocr_check_{k.replace('+', '_')}",
+        draw_sheets(f"ocr_check_{'clean_' if args.clean else ''}{k.replace('+', '_')}",
                     [(VAL / r["path"], f"{r['city']}>{r['answer']}") for r in pick])
 
 
