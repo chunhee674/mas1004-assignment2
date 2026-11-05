@@ -1,2 +1,3 @@
 python src/train_b.py --tag b2 --model mobilenet_v3_large --size 448 --balance --epochs 6 --submit
+python src/train_b.py --tag b3 --model mobilenet_v3_large --size 448 --balance --epochs 12 --submit
 python src/check_submission.py --no-val
