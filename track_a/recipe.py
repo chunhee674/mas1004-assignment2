@@ -26,7 +26,7 @@ from torchvision import transforms as T
 
 BATCH_SIZE = 64
 STREET_SOURCES = ("youtube", "osv5m")  # the first word of a photo's file name
-STREET_WEIGHT = 2.0  # within a city, how much more often a street photo is drawn
+STREET_WEIGHT = 3.0  # within a city, how much more often a street photo is drawn
 
 
 def train_transform():

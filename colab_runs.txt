@@ -1,1 +1,1 @@
-python src/official.py --tag clean_street2 --seed 0
+python src/official.py --tag clean_street3 --seed 0
