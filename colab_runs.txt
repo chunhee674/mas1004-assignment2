@@ -1,1 +1,1 @@
-python src/street_val.py clean_street2_video_lr clean_street2_video_color
+python src/street_memory.py clean_street2_video_color
