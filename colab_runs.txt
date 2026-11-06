@@ -1,1 +1,1 @@
-python src/official.py --tag clean_street2_video_lr_color --seed 0
+python src/official.py --tag clean_street2_video_color --seed 0

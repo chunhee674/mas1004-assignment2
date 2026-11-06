@@ -27,8 +27,6 @@ from torchvision import transforms as T
 BATCH_SIZE = 64
 STREET_SOURCES = ("youtube", "osv5m")  # the first word of a photo's file name
 STREET_WEIGHT = 2.0  # within a city, how much more often a street photo is drawn
-BACKBONE_LR = 1e-4  # the layers that come with the ImageNet weights
-LAST_LAYER_LR = 1e-3  # the new last layer
 
 
 def train_transform():
@@ -75,17 +73,13 @@ def sample_weights(cities, paths):
 
 
 def make_optimizer(model):
-    last = list(model.fc.parameters())
-    chosen = {id(p) for p in last}
-    rest = [p for p in model.parameters() if id(p) not in chosen]
-    return torch.optim.AdamW([{"params": rest, "lr": BACKBONE_LR}, {"params": last, "lr": LAST_LAYER_LR}],
-                             weight_decay=0.05)
+    return torch.optim.AdamW(model.parameters(), lr=3e-4, weight_decay=0.05)
 
 
 def make_scheduler(optimizer, total_steps):
     """Stepped once after every training step. total_steps is BUDGET // BATCH_SIZE."""
     return torch.optim.lr_scheduler.OneCycleLR(
-        optimizer, max_lr=[BACKBONE_LR, LAST_LAYER_LR], total_steps=total_steps, pct_start=0.15)
+        optimizer, max_lr=3e-4, total_steps=total_steps, pct_start=0.15)
 
 
 def mix(images, labels):
