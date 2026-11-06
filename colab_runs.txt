@@ -1,1 +1,1 @@
-python src/street_memory.py clean_street2_video
+python src/official.py --tag clean_street2_video_lr_color --seed 0
