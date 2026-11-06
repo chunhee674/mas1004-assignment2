@@ -19,12 +19,15 @@ leaderboard.
 """
 
 import collections
+from pathlib import Path
 
 import torch
 import torch.nn.functional as F
 from torchvision import transforms as T
 
 BATCH_SIZE = 64
+STREET_SOURCES = ("youtube", "osv5m")  # the first word of a photo's file name
+STREET_WEIGHT = 2.0  # within a city, how much more often a street photo is drawn
 
 
 def train_transform():
@@ -49,8 +52,11 @@ def sample_weights(cities, paths):
     is drawn twice as often as one with weight 1. Return None to go through
     the selection in a new random order each time, every photo once per round.
     """
-    counts = collections.Counter(cities)
-    return [1.0 / counts[c] for c in cities]
+    raw = [STREET_WEIGHT if Path(p).name.split("_")[0] in STREET_SOURCES else 1.0 for p in paths]
+    totals = collections.Counter()
+    for c, w in zip(cities, raw):
+        totals[c] += w
+    return [w / totals[c] for c, w in zip(cities, raw)]
 
 
 def make_optimizer(model):

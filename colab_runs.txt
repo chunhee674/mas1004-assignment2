@@ -1,1 +1,1 @@
-python src/ocr_boxes.py
+python src/official.py --tag clean_street2 --seed 0
