@@ -19,7 +19,6 @@ leaderboard.
 """
 
 import collections
-from pathlib import Path
 
 import torch
 import torch.nn.functional as F
@@ -52,7 +51,7 @@ def sample_weights(cities, paths):
     is drawn twice as often as one with weight 1. Return None to go through
     the selection in a new random order each time, every photo once per round.
     """
-    raw = [STREET_WEIGHT if Path(p).name.split("_")[0] in STREET_SOURCES else 1.0 for p in paths]
+    raw = [STREET_WEIGHT if p.split("/")[-1].split("_")[0] in STREET_SOURCES else 1.0 for p in paths]
     totals = collections.Counter()
     for c, w in zip(cities, raw):
         totals[c] += w
