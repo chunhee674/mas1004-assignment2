@@ -26,7 +26,7 @@ from torchvision import transforms as T
 
 BATCH_SIZE = 64
 STREET_SOURCES = ("youtube", "osv5m")  # the first word of a photo's file name
-STREET_WEIGHT = 3.0  # within a city, how much more often a street photo is drawn
+STREET_WEIGHT = 2.0  # within a city, how much more often a street photo is drawn
 
 
 def train_transform():
@@ -51,7 +51,21 @@ def sample_weights(cities, paths):
     is drawn twice as often as one with weight 1. Return None to go through
     the selection in a new random order each time, every photo once per round.
     """
-    raw = [STREET_WEIGHT if p.split("/")[-1].split("_")[0] in STREET_SOURCES else 1.0 for p in paths]
+    names = [p.split("/")[-1] for p in paths]
+    videos = [n[len("youtube_"):].rsplit("_", 1)[0] if n.startswith("youtube_") else None for n in names]
+    frames = collections.Counter(v for v in videos if v)
+    video_city = {v: c for v, c in zip(videos, cities) if v}
+    per_video = collections.defaultdict(list)
+    for v, n in frames.items():
+        per_video[video_city[v]].append(n)
+    # a video's frames share one amount, the mean size of a video in the city, so every video is drawn equally
+    mean_frames = {c: sum(n) / len(n) for c, n in per_video.items()}
+    raw = []
+    for n, v, c in zip(names, videos, cities):
+        if v:
+            raw.append(STREET_WEIGHT * mean_frames[c] / frames[v])
+        else:
+            raw.append(STREET_WEIGHT if n.split("_")[0] in STREET_SOURCES else 1.0)
     totals = collections.Counter()
     for c, w in zip(cities, raw):
         totals[c] += w
