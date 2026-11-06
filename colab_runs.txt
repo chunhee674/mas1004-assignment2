@@ -1,1 +1,1 @@
-python src/official.py --tag clean_street2_video --seed 0
+python src/street_val.py balanced_clean clean_street2 clean_street3 clean_street2_video
