@@ -39,7 +39,7 @@ def train_transform():
     return T.Compose([
         T.RandomResizedCrop(224, scale=(0.35, 1.0)),
         T.RandomHorizontalFlip(),
-        T.ColorJitter(0.2, 0.2, 0.2),
+        T.ColorJitter(0.4, 0.4, 0.4, 0.05),
     ])
 
 
