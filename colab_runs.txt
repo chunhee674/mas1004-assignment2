@@ -1,1 +1,1 @@
-python src/new_val.py baseline balanced balanced_clean clean2 clean_street2_video clean_street2_video_color b1 b2
+python src/new_val.py b1 b2
