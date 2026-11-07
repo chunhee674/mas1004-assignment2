@@ -1,1 +1,2 @@
-python src/new_val.py b1 b2
+python src/train_b.py --tag b3 --model mobilenet_v3_large --size 448 --epochs 6 --balance --folders data/starter/train data/mine
+python src/new_val.py b1 b2 b3
