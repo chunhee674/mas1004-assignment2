@@ -1,2 +1,4 @@
-python src/train_b.py --tag b3 --model mobilenet_v3_large --size 448 --epochs 6 --balance --folders data/starter/train data/mine
-python src/new_val.py b1 b2 b3
+# b3 and its scores ran in the session before; selection.csv changed, so they would run again
+# python src/train_b.py --tag b3 --model mobilenet_v3_large --size 448 --epochs 6 --balance --folders data/starter/train data/mine
+# python src/new_val.py b1 b2 b3
+python src/official.py --tag clean3_s2v_color --seed 0
