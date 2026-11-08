@@ -42,9 +42,6 @@ def train_transform():
         T.ColorJitter(0.4, 0.4, 0.4, 0.05),
         # every video has its own sharpness and texture; blur hides it half the time
         T.RandomApply([T.GaussianBlur(9, sigma=(0.1, 2.0))], p=0.5),
-        T.ToTensor(),
-        # a hidden patch: a caption, a logo or one fixed thing cannot give the video away
-        T.RandomErasing(p=0.5, scale=(0.02, 0.2), value=0),
     ])
 
 
