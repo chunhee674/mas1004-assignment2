@@ -9,7 +9,8 @@ Without --per-city, one frame a minute (training photos, data/mine). With
 its videos, like the leaderboard photos. The first and last 5% of a video are
 skipped, where intros and end screens are. Only the moments that are kept are
 read from the stream (at most 720p), so no whole video is downloaded. Frames go
-to <out>/<city>/ytmine_<video>_<k>.jpg, which git does not track. Videos whose
+to <out>/<city>/ytmine_<video>_<k>.jpg, which git does not track, saved at
+854 x 480 and quality 85 like the starter frames (see shrink_frames.py). Videos whose
 frames are already all there are skipped.
 """
 
@@ -22,6 +23,8 @@ from pathlib import Path
 
 import imageio_ffmpeg
 import yt_dlp
+
+from shrink_frames import shrink
 
 ROOT = Path(__file__).resolve().parents[1]
 FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
@@ -80,6 +83,8 @@ def main():
             for k in keep:
                 t = duration * (0.05 + 0.9 * (k + 0.5) / n)
                 pool.submit(grab, url, t, out / f"ytmine_{video}_{k:03d}.jpg")
+        for frame in out.glob(f"ytmine_{video}_*.jpg"):
+            shrink(frame)
         got = len(list(out.glob(f"ytmine_{video}_*.jpg")))
         print(f"{city:7} {video}  {duration / 60:5.1f} min  {height}p  {got}/{len(keep)} frames", flush=True)
 
