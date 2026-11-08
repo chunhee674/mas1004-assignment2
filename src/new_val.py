@@ -7,8 +7,9 @@ A tag is a Track A run (results/<tag>_seed0/model.onnx, 224), a Track B run
 "submission" (submission/model.onnx, the Track B release). The
 photos were made by scripts/video_frames.py from scripts/val_videos.csv: 140 a
 city, at most 20 a video, like the leaderboard. Prints the score (the mean over
-cities) and each city, and writes results/curate/new_val.csv, one row per model
-(rows of earlier models are kept).
+cities), each city and where each city's photos went, and writes
+results/curate/new_val.csv, one row per model (rows of earlier models are
+kept), and results/curate/new_val_<tag>.csv, the answer for every photo.
 """
 
 import csv
@@ -42,6 +43,7 @@ def main():
     if out.exists():
         with open(out, encoding="utf-8") as f:
             rows = {r["tag"]: r for r in csv.DictReader(f)}
+    OUT.mkdir(parents=True, exist_ok=True)
     for tag in sys.argv[1:]:
         onnx, size = model_of(tag)
         answers = predict(onnx, [p for p, _ in photos], size=size).argmax(1)
@@ -51,9 +53,18 @@ def main():
             per_city.append(sum(answers[k] == i for k in mine) / max(1, len(mine)))
         score = sum(per_city) / len(CITIES)
         print(f"{tag:28} {score:.3f}  " + "  ".join(f"{c} {v:.3f}" for c, v in zip(CITIES, per_city)), flush=True)
+        print(f"  {'photos of':10}" + "".join(f"{c:>8}" for c in CITIES))
+        for i, city in enumerate(CITIES):
+            mine = [answers[k] for k, (_, c) in enumerate(photos) if c == city]
+            print(f"  {city:10}" + "".join(f"{sum(a == j for a in mine) / max(1, len(mine)):8.3f}"
+                                         for j in range(len(CITIES))), flush=True)
+        with open(OUT / f"new_val_{tag}.csv", "w", newline="", encoding="utf-8") as f:
+            w = csv.writer(f)
+            w.writerow(["path", "city", "answer"])
+            for (path, city), a in zip(photos, answers):
+                w.writerow([Path(path).relative_to(PHOTOS).as_posix(), city, CITIES[a]])
         rows[tag] = {"tag": tag, "size": size, "score": round(score, 4),
                      **{c: round(v, 4) for c, v in zip(CITIES, per_city)}}
-        OUT.mkdir(parents=True, exist_ok=True)
         with open(out, "w", newline="", encoding="utf-8") as f:
             w = csv.DictWriter(f, fieldnames=["tag", "size", "score", *CITIES])
             w.writeheader()
