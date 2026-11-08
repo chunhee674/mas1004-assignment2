@@ -1,6 +1,6 @@
 {
   "image_size": 448,
   "starting_weights": "torchvision mobilenet_v3_large IMAGENET1K_V2",
-  "data": "data/starter/train",
+  "data": "data/starter/train + data/mine",
   "summary": "mobilenet_v3_large at 448, 6 epochs"
 }
