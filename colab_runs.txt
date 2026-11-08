@@ -1,15 +1,4 @@
-# b3 and its scores ran in the session before; selection.csv changed, so they would run again
-# python src/train_b.py --tag b3 --model mobilenet_v3_large --size 448 --epochs 6 --balance --folders data/starter/train data/mine
-python src/official.py --tag clean3_s2v_color --seed 0
-python src/street_val.py clean3_s2v_color
-python src/street_memory.py clean3_s2v_color
-# data/mine and data/streetval are now 854 x 480, quality 85 (scripts/shrink_frames.py)
-python src/new_val.py b1 b2 b3
-python src/train_b.py --tag b4 --model mobilenet_v3_large --size 448 --epochs 6 --balance --folders data/starter/train data/mine
-python src/new_val.py b4
-python src/new_val.py b3 b4
-python src/run_variant.py track_a_variants/blur --tag clean3_blur --seed 0
-python src/run_variant.py track_a_variants/cutmix --tag clean3_cutmix --seed 0
-python src/street_val.py clean3_blur clean3_cutmix
-python src/street_memory.py clean3_blur
-python src/street_memory.py clean3_cutmix
+# Earlier runs are done; their lines are in git history.
+# data/mine now has Seoul (8 videos, 449 frames) and Tokyo (10 videos, 495 frames) as well
+python src/train_b.py --tag b5 --model mobilenet_v3_large --size 448 --epochs 6 --balance --folders data/starter/train data/mine
+python src/new_val.py b5

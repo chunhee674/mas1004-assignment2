@@ -4,7 +4,8 @@
     uv run --with yt-dlp --with imageio-ffmpeg python scripts/video_frames.py \\
         --videos scripts/val_videos.csv --out data/streetval --per-city 140
 
-Without --per-city, one frame a minute (training photos, data/mine). With
+Without --per-city, one frame a minute (training photos, data/mine), or the
+number in the frames column of the list, for a video much longer than the rest. With
 --per-city, every city gets that many frames, shared as evenly as possible over
 its videos, like the leaderboard photos. The first and last 5% of a video are
 skipped, where intros and end screens are. Only the moments that are kept are
@@ -48,6 +49,8 @@ def main():
     ap.add_argument("--out", default=str(ROOT / "data" / "mine"))
     ap.add_argument("--every", type=float, default=60, help="seconds between two frames")
     ap.add_argument("--per-city", type=int, help="frames for each city, split over its videos")
+    ap.add_argument("--only", nargs="+", help="these video ids only; every other video asks YouTube too, "
+                    "and too many questions in a row get answered with a sign-in page")
     args = ap.parse_args()
     with open(args.videos, encoding="utf-8") as f:
         rows = list(csv.DictReader(f))
@@ -62,6 +65,8 @@ def main():
 
     for row in rows:
         city, video = row["city"], row["video_id"]
+        if args.only and video not in args.only:
+            continue
         out = Path(args.out) / city
         out.mkdir(parents=True, exist_ok=True)
         try:
@@ -72,6 +77,8 @@ def main():
         if args.per_city:
             share, extra = divmod(args.per_city, len(per_city[city]))
             n = share + (per_city[city].index(video) < extra)
+        elif row.get("frames"):  # a long video gets as many frames as a usual one
+            n = int(row["frames"])
         else:
             n = max(1, int(0.9 * duration / args.every))
         keep = [k for k in range(n) if f"ytmine_{video}_{k:03d}.jpg" not in dropped]

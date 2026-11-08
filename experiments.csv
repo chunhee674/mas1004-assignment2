@@ -17,3 +17,8 @@ finished,track,tag,seed,official_budget,budget,val_score,seoul,busan,tokyo,osaka
 2026-11-06T22:54:27,A,clean_street2_video_lr,0,True,249984,0.498,0.4899,0.4669,0.4535,0.4615,0.6184,2154.7,cuda,"selection.csv, 43183 rows",d0d34a318752,b4cb6826b2eb,30c6869
 2026-11-06T23:44:53,A,clean_street2_video_color,0,True,249984,0.5156,0.5146,0.4813,0.4769,0.4695,0.6358,2775.3,cuda,"selection.csv, 43183 rows",891958b33362,b4cb6826b2eb,30c6869
 2026-11-07T02:50:24,A,clean_color,0,True,249984,0.5097,0.5384,0.4532,0.5146,0.4455,0.597,2962.8,cuda,"selection.csv, 43183 rows",6fd7fc93ee1d,b4cb6826b2eb,3e53010
+2026-11-08T03:33:21,B,b3,,,274176,0.5736,0.5815,0.5115,0.6377,0.5005,0.6366,5853.3,cuda,mobilenet_v3_large 448px; data/starter/train + data/mine,,,cbbffc6
+2026-11-08T12:28:55,A,clean3_s2v_color,0,True,249984,0.511,0.4854,0.4799,0.47,0.4704,0.6491,2857.4,cuda,"selection.csv, 42349 rows",891958b33362,d124b854e34a,850702c
+2026-11-08T14:36:43,B,b4,,,274176,0.569,0.5478,0.5137,0.6184,0.4953,0.6696,5815.9,cuda,mobilenet_v3_large 448px; data/starter/train + data/mine,,,f3effbe
+2026-11-08T15:54:57,A,clean3_blur,0,True,249984,0.4935,0.4522,0.4871,0.4264,0.484,0.6179,3633.1,cuda,"selection.csv, 42349 rows",7d9a3d21e5bf,d124b854e34a,59f98e6
+2026-11-08T16:46:20,A,clean3_cutmix,0,True,249984,0.4942,0.4534,0.4712,0.4169,0.4601,0.6692,2847.4,cuda,"selection.csv, 42349 rows",706c9b3053f0,d124b854e34a,59f98e6
