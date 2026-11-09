@@ -64,6 +64,9 @@ def build(name):
     return net, f"torchvision {fn} {weights}"
 
 
+STREET_SOURCES = ("youtube", "osv5m", "ytmine")  # the first word of a photo's file name
+
+
 class Photos(Dataset):
     def __init__(self, rows, transform):
         self.rows, self.transform = rows, transform
@@ -112,6 +115,8 @@ def main():
     ap.add_argument("--lr", type=float, default=3e-4)
     ap.add_argument("--batch-size", type=int, default=64)
     ap.add_argument("--balance", action="store_true", help="draw every city equally often")
+    ap.add_argument("--street-weight", type=float, default=1.0,
+                    help="within a city, draw street photos (youtube, osv5m, ytmine) this many times as often")
     ap.add_argument("--workers", type=int, default=min(8, os.cpu_count() or 2))
     ap.add_argument("--submit", action="store_true", help="also copy the model into submission/")
     ap.add_argument("--val-every", type=int, default=1,
@@ -132,8 +137,11 @@ def main():
 
     tf = T.Compose([T.RandomResizedCrop(args.size, scale=(0.35, 1.0)), T.RandomHorizontalFlip(),
                     T.ColorJitter(0.2, 0.2, 0.2), T.ToTensor(), T.Normalize(MEAN, STD)])
-    if args.balance:
-        weights = [1.0 / counts[c] for _, c in rows]
+    if args.balance or args.street_weight != 1.0:
+        raw = [args.street_weight if Path(p).name.split("_")[0] in STREET_SOURCES else 1.0 for p, _ in rows]
+        # with --balance every city still adds up to the same share; the street weight only moves draws within a city
+        total = {c: sum(w for w, (_, x) in zip(raw, rows) if x == c) for c in CITIES}
+        weights = [w / total[c] if args.balance else w for w, (_, c) in zip(raw, rows)]
         sampler = torch.utils.data.WeightedRandomSampler(weights, len(rows), replacement=True)
         loader = DataLoader(Photos(rows, tf), batch_size=args.batch_size, sampler=sampler,
                             num_workers=args.workers, drop_last=True)
