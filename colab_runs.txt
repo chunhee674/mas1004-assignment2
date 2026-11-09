@@ -1,4 +1,4 @@
 # Earlier runs are done; their lines are in git history.
-# data/mine now also has Osaka Dotonbori daytime walks (4 videos) and driving videos for Taipei (6), Osaka (4) and Busan (4), plus one Osaka local street walk
+# data/mine now also has Osaka Dotonbori daytime walks (4 videos) and driving videos for Taipei (5), Osaka (4) and Busan (4), plus one Osaka local street walk
 python src/train_b.py --tag b6 --model mobilenet_v3_large --size 448 --epochs 6 --balance --folders data/starter/train data/mine
 python src/new_val.py b6
