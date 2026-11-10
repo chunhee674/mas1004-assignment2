@@ -1,0 +1,8 @@
+city      selected     of   by source
+seoul        10950  11274   commons 6449, osv5m 320, youtube 4181
+busan         5121   5191   commons 3427, youtube 1694
+tokyo        13175  13347   commons 6809, osv5m 1916, youtube 4450
+osaka         7054   7200   commons 5264, osv5m 340, youtube 1450
+taipei        6883   7245   commons 5310, osv5m 531, youtube 1042
+total 43183 rows
+dropped: 686 도시 단서가 없는 클로즈업·하늘 등(규칙 1); 180 코스프레 사진(규칙 4): 코스프레한 사람이 중심이거나 사물 클로즈업; 162 360도 파노라마(규칙 2); 46 너무 어둡거나 흐려서 파악 어려움(규칙 3)
